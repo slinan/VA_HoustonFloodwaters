@@ -100,6 +100,19 @@
     stroke-width: 2;
     opacity: 0.5;
 }
+#medium {
+    fill:rgb(248, 243, 137);
+}
+
+#high {
+    fill:rgb(224, 156, 161);
+}
+
+#low {
+    fill:rgb(111, 173, 111);
+}
+
+
 @media (max-width:500px){
     .chart-wrapper .line {stroke-width: 3px;}
     .chart-wrapper .legend {font-size: 14px;}

@@ -14,7 +14,21 @@ function makeLineChart(dataset, xName, yObjs, axisLables) {
     chartObj.height = 480 - chartObj.margin.top - chartObj.margin.bottom;
 
 // So we can pass the x and y as strings when creating the function
-    chartObj.xFunct = function(d){return d[xName]};
+    chartObj.xFunct = function(d){
+
+    var txtDia = "Day 2";
+
+    if(d[xName]< 26)
+    {
+        txtDia = "Day 1";
+    }
+    else if(d[xName] >48)
+    {
+        txtDia = "Day 3";
+    }
+
+    document.getElementById("day").innerHTML = txtDia;
+        return d[xName]};
 
 // For each yObjs argument, create a yFunction
     function getYFn(column) {
@@ -47,7 +61,7 @@ function makeLineChart(dataset, xName, yObjs, axisLables) {
     chartObj.xFormatter = chartObj.formatAsNumber;
     chartObj.yFormatter = chartObj.formatAsFloat;
 
-    chartObj.bisectYear = d3.bisector(chartObj.xFunct).left; //< Can be overridden in definition
+    chartObj.bisectHour = d3.bisector(chartObj.xFunct).left; //< Can be overridden in definition
 
 //Create scale functions
     chartObj.xScale = d3.scale.linear().range([0, chartObj.width]).domain(d3.extent(chartObj.data, chartObj.xFunct)); //< Can be overridden in definition
@@ -58,7 +72,7 @@ function makeLineChart(dataset, xName, yObjs, axisLables) {
     };
     chartObj.yScale = d3.scale.linear().range([chartObj.height, 0]).domain([0, d3.max(chartObj.yFuncts.map(chartObj.max))]);
 
-    chartObj.formatAsYear = d3.format("");
+    chartObj.formatAsHour = d3.format("");
 
 //Create axis
     chartObj.xAxis = d3.svg.axis().scale(chartObj.xScale).orient("bottom").tickFormat(chartObj.xFormatter); //< Can be overridden in definition
@@ -127,8 +141,27 @@ function makeLineChart(dataset, xName, yObjs, axisLables) {
 
 // Render the chart
     chartObj.render = function () {
+
         //Create SVG element
         chartObj.svg = chartObj.chartDiv.append("svg").attr("class", "chart-area").attr("width", chartObj.width + (chartObj.margin.left + chartObj.margin.right)).attr("height", chartObj.height + (chartObj.margin.top + chartObj.margin.bottom)).append("g").attr("transform", "translate(" + chartObj.margin.left + "," + chartObj.margin.top + ")");
+
+
+       chartObj.svg.append("rect")
+                            .attr("x", 0)
+                            .attr("y", chartObj.height/3)
+                            .attr("width", chartObj.width)
+                            .attr("height", chartObj.height/3)
+                            .attr("id","medium");
+
+
+                                   chartObj.svg.append("rect")
+                            .attr("x", 0)
+                            .attr("y", 0)
+                            .attr("width", chartObj.width)
+                            .attr("height", chartObj.height/3)
+                            .attr("id","high");
+
+
 
         // Draw Lines
         for (var y  in yObjs) {
@@ -138,7 +171,7 @@ function makeLineChart(dataset, xName, yObjs, axisLables) {
                 focus.transition().delay(700).style("display", "none");
             }).on("mousemove", mousemove);
         }
-        
+      
 
         // Draw Axis
         chartObj.svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + chartObj.height + ")").call(chartObj.xAxis).append("text").attr("class", "label").attr("x", chartObj.width / 2).attr("y", 30).style("text-anchor", "middle").text(chartObj.xAxisLable);
@@ -155,8 +188,8 @@ function makeLineChart(dataset, xName, yObjs, axisLables) {
             yObjs[y].tooltip.append("text").attr("x", 9).attr("dy", ".35em");
         }
 
-        // Year label
-        focus.append("text").attr("class", "focus year").attr("x", 9).attr("y", 7);
+        // Hour label
+        focus.append("text").attr("class", "focus hour").attr("x", 12).attr("y", 12);
         // Focus line
         focus.append("line").attr("class", "focus line").attr("y1", 0).attr("y2", chartObj.height);
 
@@ -169,6 +202,7 @@ function makeLineChart(dataset, xName, yObjs, axisLables) {
             yObjs[y].legend = series;
         }
 
+
         // Overlay to capture hover
         chartObj.svg.append("rect").attr("class", "overlay").attr("width", chartObj.width).attr("height", chartObj.height).on("mouseover", function () {
             focus.style("display", null);
@@ -178,7 +212,7 @@ function makeLineChart(dataset, xName, yObjs, axisLables) {
 
         return chartObj;
         function mousemove() {
-            var x0 = chartObj.xScale.invert(d3.mouse(this)[0]), i = chartObj.bisectYear(dataset, x0, 1), d0 = chartObj.data[i - 1], d1 = chartObj.data[i];
+            var x0 = chartObj.xScale.invert(d3.mouse(this)[0]), i = chartObj.bisectHour(dataset, x0, 1), d0 = chartObj.data[i - 1], d1 = chartObj.data[i];
             try {
                 var d = x0 - chartObj.xFunct(d0) > chartObj.xFunct(d1) - x0 ? d1 : d0;
             } catch (e) { return;}
@@ -190,8 +224,10 @@ function makeLineChart(dataset, xName, yObjs, axisLables) {
             }
 
             focus.select(".focus.line").attr("transform", "translate(" + chartObj.xScale(chartObj.xFunct(d)) + ")").attr("y1", minY);
-            focus.select(".focus.year").text("Year: " + chartObj.xFormatter(chartObj.xFunct(d)));
+            focus.select(".focus.hour").text("Hour: " + chartObj.xFormatter(chartObj.xFunct(d)));
+
         }
+
 
     };
     return chartObj;
