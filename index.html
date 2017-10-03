@@ -23,20 +23,27 @@
     <!-- Begin page content -->
     <div class="container">
       <div class="mt-3">
-        <h1>Inundaciones en Houston </h1>
+        <h1 align="center">HOY Houston sigue inundado</h1>
       </div>
-      <p class="lead"> Se presenta una visualización ficticia de las inundaciones en Houston TX.
+      <br>
+<center>
+          <img src="http://i2.cdn.cnn.com/cnnnext/dam/assets/170828100932-62c-hurricane-harvey-0827-super-169.jpg" alt="Mountain View" align="middle" style="width:520px;height:328px;">
+        </center>
+        <br>
 
-    </p>
+      <p class="lead"> Se presenta una visualización ficticia de las inundaciones en Houston TX.</p>
 
-<h1 align="center" id="day"> Day: 1 </h1>
+      <p class="lead"> Después de 72 horas, los niveles de agua superan la máxima capacidad de los desagües en todos los barrios. <b>Kinwood</b> presenta más de 13 metros de agua, sin embargo barrios como <b>Downtown Houston </b> ya están a punto de olvidar la inundación. </p>
+
+
+<h1 align="center" id="day"> Día: 1 </h1>
 <div class="chart-wrapper" id="chart-line1"></div>
 
-      <p class="lead"> Se representa el nivel del agua sobre la ciudad para cada uno de los barrios. El nivel de cada barrio se calcula a partir del promedio de las mediciones de los desagües del barrio. Se tomaron mediciones cada hora a partir de la hora 0 (momento en el que arribó el huracán a la costa).</p>
-
-     <p class="lead"> Entre el 2010 y el 2016 se presentaron 3183 personas, es decir en promedio 44 al mes. <code id="mujer">1845 mujeres </code> y <code id="hombre">1338 hombres </code>.</p>
+      <p class="lead"> Se representa el nivel del agua sobre la ciudad para cada uno de los barrios. El nivel de cada barrio se calcula a partir del promedio de la resta de las mediciones de los desagües del barrio sobre la máxima altura de cada desagüe. Se tomaron mediciones cada 2 horas a partir de la hora 0 (momento en el que arribó el huracán a la costa).</p>
 
     </div>
+
+
 
 
 <script type="text/javascript">
@@ -54,7 +61,7 @@
         'Kingwood': {column: 'variableB'},
         'Meyerland': {column: 'variableC'},
         'Westchase': {column: 'variableD'}
-    }, {xAxis: 'Hours', yAxis: 'Meters'});
+    }, {xAxis: 'Horas', yAxis: 'Nivel de agua sobre los desagües'});
     chart.bind("#chart-line1");
     chart.render();
 

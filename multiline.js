@@ -16,15 +16,15 @@ function makeLineChart(dataset, xName, yObjs, axisLables) {
 // So we can pass the x and y as strings when creating the function
     chartObj.xFunct = function(d){
 
-    var txtDia = "Day 2";
+    var txtDia = "Día 2";
 
     if(d[xName]< 26)
     {
-        txtDia = "Day 1";
+        txtDia = "Día 1";
     }
     else if(d[xName] >48)
     {
-        txtDia = "Day 3";
+        txtDia = "Día 3";
     }
 
     document.getElementById("day").innerHTML = txtDia;
@@ -147,19 +147,17 @@ function makeLineChart(dataset, xName, yObjs, axisLables) {
 
 
        chartObj.svg.append("rect")
-                            .attr("x", 0)
-                            .attr("y", chartObj.height/3)
-                            .attr("width", chartObj.width)
-                            .attr("height", chartObj.height/3)
-                            .attr("id","medium");
-
-
-                                   chartObj.svg.append("rect")
-                            .attr("x", 0)
-                            .attr("y", 0)
-                            .attr("width", chartObj.width)
-                            .attr("height", chartObj.height/3)
+                            .attr("x", chartObj.width-5)
+                            .attr("y", 10)
+                            .attr("width", 5)
+                            .attr("height", chartObj.height-10)
                             .attr("id","high");
+
+        chartObj.svg.append("text")
+        .attr("y", 2)//magic number here
+        .attr("x", chartObj.width-30)
+        .attr("id", "myLabel")//easy to style with CSS
+        .text("Hoy");
 
 
 
@@ -224,7 +222,7 @@ function makeLineChart(dataset, xName, yObjs, axisLables) {
             }
 
             focus.select(".focus.line").attr("transform", "translate(" + chartObj.xScale(chartObj.xFunct(d)) + ")").attr("y1", minY);
-            focus.select(".focus.hour").text("Hour: " + chartObj.xFormatter(chartObj.xFunct(d)));
+            focus.select(".focus.hour").text("Hora: " + chartObj.xFormatter(chartObj.xFunct(d)));
 
         }
 
